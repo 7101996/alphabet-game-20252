@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&display=swap');
+body {
+    margin: 0; font-family: 'Cairo', sans-serif; display: flex;
+    justify-content: center; align-items: center; height: 100vh;
+    background-color: #333; overflow: hidden;
+}
+#game-container {
+    width: 400px; height: 650px; background-color: #707070;
+    border-left: 10px dashed #fff; border-right: 10px dashed #fff;
+    position: relative; overflow: hidden; box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+#game-area { position: relative; width: 100%; height: 100%; }
+
+/* --- تم تعديل هذا الجزء بالكامل بالحل النهائي --- */
+#player-car {
+    width: 60px;
+    height: 100px;
+    position: absolute;
+    bottom: 20px;
+    left: 170px;
+    
+    /* سيارة صفراء محسنة مرسومة مباشرة في الكود لضمان ظهورها 100% */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 100'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' style='stop-color:%23ffeb3b;stop-opacity:1' /%3E%3Cstop offset='50%25' style='stop-color:%23fbc02d;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23ffeb3b;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M10,0 C0,10 0,80 10,100 L50,100 C60,80 60,10 50,0 Z' fill='url(%23grad)'/%3E%3Cpath d='M10,10 C5,15 5,50 10,55 L50,55 C55,50 55,15 50,10 Z' fill='%232c3e50' stroke='%23424242' stroke-width='2'/%3E%3Crect x='15' y='65' width='30' height='2' rx='1' fill='%23f44336'/%3E%3Crect x='8' y='88' width='10' height='8' rx='2' fill='%23e53935'/%3E%3Crect x='42' y='88' width='10' height='8' rx='2' fill='%23e53935'/%3E%3C/svg%3E");
+    
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+/* --- نهاية التعديل --- */
+
+.falling-object {
+    position: absolute; width: 50px; height: 50px; font-size: 40px; font-weight: 900;
+    display: flex; justify-content: center; align-items: center;
+    color: white; border-radius: 50%; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+.obstacle { background-color: #dc3545; }
+.prize { background-color: #28a745; }
+#ui-layer { display: block; } 
+#score-display {
+    position: absolute; top: 10px; right: 10px; z-index: 10;
+    color: white; font-size: 1.5em;
+}
+#prize-counter {
+    position: absolute; top: 10px; left: 10px; z-index: 10;
+    color: white; font-size: 1.5em;
+}
+.screen {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); color: white;
+    display: flex; flex-direction: column; justify-content: center;
+    align-items: center; text-align: center; z-index: 20;
+}
+.hide { display: none; }
+#letter-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; width: 90%; max-width: 350px; }
+.letter-btn, .btn { cursor: pointer; border: none; border-radius: 8px; font-family: 'Cairo', sans-serif; font-size: 1.2em; padding: 10px 20px; color: white; transition: transform 0.2s, background-color 0.2s; }
+.letter-btn { font-size: 1.5rem; background-color: #007bff; }
+.letter-btn:hover { background-color: #0056b3; transform: scale(1.1); }
+.btn { background-color: #28a745; }
+.btn:hover { background-color: #218838; }
+.button-container { display: flex; flex-direction: column; gap: 15px; width: 80%; }
+#pause-screen .btn { background-color: #17a2b8; width: 100%; }
+#pause-screen .btn:hover { background-color: #138496; }
+.screen h1 { font-size: 2.5em; margin-bottom: 20px; }
+.screen p { font-size: 1.2em; margin-bottom: 20px; max-width: 80%; }

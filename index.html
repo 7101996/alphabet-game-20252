@@ -1,0 +1,37 @@
+<div id="game-container">
+    <div id="ui-layer">
+        <div id="prize-counter">الجوائز: 0 / 20</div>
+        <div id="score-display">النتيجة: 0</div>
+    </div>
+    <div class="screen" id="start-screen">
+        <h1>لعبة الحروف العربية</h1>
+        <p>استخدم أسهم لوحة المفاتيح للحركة</p>
+        <p>اجمع 20 جائزة للفوز!</p>
+        <button id="start-button" class="btn">ابدأ اللعبة</button>
+    </div>
+    <div class="screen hide" id="character-selection-screen">
+        <h1>اختر حرف الهدية</h1>
+        <div id="letter-grid"></div>
+    </div>
+    <div class="screen hide" id="pause-screen">
+        <h1>متوقفة مؤقتاً</h1>
+        <div class="button-container">
+            <button id="resume-btn" class="btn">استئناف اللعبة</button>
+            <button id="restart-level-btn" class="btn">إعادة المحاولة</button>
+            <button id="new-game-btn" class="btn">لعبة جديدة</button>
+        </div>
+    </div>
+    <div class="screen hide" id="game-over-screen">
+        <h1>انتهت اللعبة!</h1>
+        <p>النتيجة النهائية: <span id="final-score">0</span></p>
+        <button id="restart-button" class="btn">اختر حرفًا جديدًا</button>
+    </div>
+    <div class="screen hide" id="win-screen">
+        <h1>🎉 أحسنت! لقد فزت! 🎉</h1>
+        <p>لقد جمعت كل الجوائز بنجاح!</p>
+        <button id="win-restart-button" class="btn">العب مرة أخرى</button>
+    </div>
+    <div id="game-area">
+        <div id="player-car"></div>
+    </div>
+</div>
