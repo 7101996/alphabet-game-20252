@@ -1,56 +1,120 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>لعبة الحروف العربية</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&display=swap');
+    body {
+      margin: 0; font-family: 'Cairo', sans-serif; display: flex;
+      justify-content: center; align-items: center;
+      background-color: #333; overflow: hidden;
+    }
+    #game-container {
+      width: 100%; max-width: 400px; height: 100vh;
+      background-color: #707070;
+      border-left: 10px dashed #fff; border-right: 10px dashed #fff;
+      position: relative; overflow: hidden;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      touch-action: none;
+    }
+    #game-area { position: relative; width: 100%; height: 100%; }
+
+    #player-car {
+      width: 60px; height: 100px; position: absolute;
+      bottom: 20px; left: 170px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 100'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' style='stop-color:%23ffeb3b;stop-opacity:1' /%3E%3Cstop offset='50%25' style='stop-color:%23fbc02d;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23ffeb3b;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M10,0 C0,10 0,80 10,100 L50,100 C60,80 60,10 50,0 Z' fill='url(%23grad)'/%3E%3Cpath d='M10,10 C5,15 5,50 10,55 L50,55 C55,50 55,15 50,10 Z' fill='%232c3e50' stroke='%23424242' stroke-width='2'/%3E%3Crect x='15' y='65' width='30' height='2' rx='1' fill='%23f44336'/%3E%3Crect x='8' y='88' width='10' height='8' rx='2' fill='%23e53935'/%3E%3Crect x='42' y='88' width='10' height='8' rx='2' fill='%23e53935'/%3E%3C/svg%3E");
+      background-size: contain; background-repeat: no-repeat; background-position: center;
+    }
+
+    .falling-object {
+      position: absolute; width: 50px; height: 50px;
+      font-size: 40px; font-weight: 900;
+      display: flex; justify-content: center; align-items: center;
+      color: white; border-radius: 50%; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    .obstacle { background-color: #dc3545; }
+    .prize { background-color: #28a745; }
+
+    #score-display, #prize-counter {
+      position: absolute; z-index: 10; color: white;
+      font-size: 1.2em; background: rgba(0,0,0,0.5);
+      padding: 5px 10px; border-radius: 5px;
+    }
+    #score-display { top: 10px; right: 10px; }
+    #prize-counter { top: 10px; left: 10px; }
+
+    .screen {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.8); color: white;
+      display: flex; flex-direction: column; justify-content: center;
+      align-items: center; text-align: center; z-index: 20;
+    }
+    .hide { display: none; }
+    #letter-grid {
+      display: grid; grid-template-columns: repeat(6, 1fr);
+      gap: 10px; width: 90%; max-width: 350px;
+    }
+    .letter-btn, .btn {
+      cursor: pointer; border: none; border-radius: 8px;
+      font-family: 'Cairo', sans-serif; font-size: 1.2em;
+      padding: 10px 20px; color: white;
+      transition: transform 0.2s, background-color 0.2s;
+    }
+    .letter-btn { font-size: 1.5rem; background-color: #007bff; }
+    .letter-btn:hover { background-color: #0056b3; transform: scale(1.1); }
+    .btn { background-color: #28a745; }
+    .btn:hover { background-color: #218838; }
+    .button-container { display: flex; flex-direction: column; gap: 15px; width: 80%; }
+    #pause-screen .btn { background-color: #17a2b8; width: 100%; }
+    #pause-screen .btn:hover { background-color: #138496; }
+    .screen h1 { font-size: 2.2em; margin-bottom: 20px; }
+    .screen p { font-size: 1.2em; margin-bottom: 20px; max-width: 80%; }
+
+    /* لمس الهاتف */
+    .touch-area {
+      position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+      z-index: 30;
+    }
+  </style>
 </head>
 <body>
   <div id="game-container">
+    <div id="game-area">
+      <div id="player-car"></div>
+    </div>
     <div id="ui-layer">
       <div id="prize-counter">الجوائز: 0 / 20</div>
       <div id="score-display">النتيجة: 0</div>
     </div>
-
-    <div class="screen" id="start-screen">
-      <h1>لعبة الحروف العربية</h1>
-      <p>استخدم أسهم لوحة المفاتيح للحركة</p>
-      <p>اجمع 20 جائزة للفوز!</p>
-      <button id="start-button" class="btn">ابدأ اللعبة</button>
-    </div>
-
-    <div class="screen hide" id="character-selection-screen">
-      <h1>اختر حرف الهدية</h1>
-      <div id="letter-grid"></div>
-    </div>
-
-    <div class="screen hide" id="pause-screen">
-      <h1>متوقفة مؤقتاً</h1>
-      <div class="button-container">
-        <button id="resume-btn" class="btn">استئناف اللعبة</button>
-        <button id="restart-level-btn" class="btn">إعادة المحاولة</button>
-        <button id="new-game-btn" class="btn">لعبة جديدة</button>
-      </div>
-    </div>
-
-    <div class="screen hide" id="game-over-screen">
-      <h1>انتهت اللعبة!</h1>
-      <p>النتيجة النهائية: <span id="final-score">0</span></p>
-      <button id="restart-button" class="btn">اختر حرفًا جديدًا</button>
-    </div>
-
-    <div class="screen hide" id="win-screen">
-      <h1>🎉 أحسنت! لقد فزت! 🎉</h1>
-      <p>لقد جمعت كل الجوائز بنجاح!</p>
-      <button id="win-restart-button" class="btn">العب مرة أخرى</button>
-    </div>
-
-    <div id="game-area">
-      <div id="player-car"></div>
-    </div>
+    <!-- الشاشات سيتم إضافتها هنا -->
   </div>
-
-  <script src="script.js"></script>
+  <div class="touch-area" id="touch-area"></div>
+  <script src="game.js"></script>
+  <script>
+    const touchArea = document.getElementById('touch-area');
+    let touchStartX = 0, touchStartY = 0;
+    touchArea.addEventListener('touchstart', e => {
+      const touch = e.touches[0];
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+    });
+    touchArea.addEventListener('touchmove', e => {
+      const touch = e.touches[0];
+      const dx = touch.clientX - touchStartX;
+      const dy = touch.clientY - touchStartY;
+      if (Math.abs(dx) > Math.abs(dy)) {
+        if (dx > 30) keys.ArrowRight = true;
+        else if (dx < -30) keys.ArrowLeft = true;
+      } else {
+        if (dy > 30) keys.ArrowDown = true;
+        else if (dy < -30) keys.ArrowUp = true;
+      }
+    });
+    touchArea.addEventListener('touchend', () => {
+      keys.ArrowRight = keys.ArrowLeft = keys.ArrowUp = keys.ArrowDown = false;
+    });
+  </script>
 </body>
 </html>
