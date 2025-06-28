@@ -72,7 +72,6 @@
     .screen h1 { font-size: 2.2em; margin-bottom: 20px; }
     .screen p { font-size: 1.2em; margin-bottom: 20px; max-width: 80%; }
 
-    /* لمس الهاتف */
     .touch-area {
       position: absolute; width: 100%; height: 100%; top: 0; left: 0;
       z-index: 30;
@@ -81,18 +80,44 @@
 </head>
 <body>
   <div id="game-container">
-    <div id="game-area">
-      <div id="player-car"></div>
-    </div>
     <div id="ui-layer">
       <div id="prize-counter">الجوائز: 0 / 20</div>
       <div id="score-display">النتيجة: 0</div>
     </div>
-    <!-- الشاشات سيتم إضافتها هنا -->
+    <div class="screen" id="start-screen">
+      <h1>لعبة الحروف العربية</h1>
+      <p>استخدم الأسهم أو السحب للتحكم</p>
+      <button id="start-button" class="btn">ابدأ اللعبة</button>
+    </div>
+    <div class="screen hide" id="character-selection-screen">
+      <h1>اختر الحرف المستهدف</h1>
+      <div id="letter-grid"></div>
+    </div>
+    <div class="screen hide" id="pause-screen">
+      <h1>متوقف مؤقتاً</h1>
+      <div class="button-container">
+        <button id="resume-btn" class="btn">استئناف</button>
+        <button id="restart-level-btn" class="btn">إعادة المحاولة</button>
+        <button id="new-game-btn" class="btn">لعبة جديدة</button>
+      </div>
+    </div>
+    <div class="screen hide" id="game-over-screen">
+      <h1>انتهت اللعبة</h1>
+      <p>النتيجة النهائية: <span id="final-score">0</span></p>
+      <button id="restart-button" class="btn">اختر حرفاً جديداً</button>
+    </div>
+    <div class="screen hide" id="win-screen">
+      <h1>🎉 أحسنت! لقد فزت! 🎉</h1>
+      <p>لقد جمعت كل الجوائز بنجاح!</p>
+      <button id="win-restart-button" class="btn">العب مرة أخرى</button>
+    </div>
+    <div id="game-area">
+      <div id="player-car"></div>
+    </div>
   </div>
   <div class="touch-area" id="touch-area"></div>
-  <script src="game.js"></script>
   <script>
+    const keys = { ArrowLeft: false, ArrowRight: false, ArrowUp: false, ArrowDown: false };
     const touchArea = document.getElementById('touch-area');
     let touchStartX = 0, touchStartY = 0;
     touchArea.addEventListener('touchstart', e => {
@@ -116,5 +141,6 @@
       keys.ArrowRight = keys.ArrowLeft = keys.ArrowUp = keys.ArrowDown = false;
     });
   </script>
+  <script src="game.js"></script>
 </body>
 </html>
